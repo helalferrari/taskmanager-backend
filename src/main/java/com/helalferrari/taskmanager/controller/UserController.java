@@ -1,5 +1,6 @@
 package com.helalferrari.taskmanager.controller;
 
+import com.helalferrari.taskmanager.dto.UserUpdateDto;
 import com.helalferrari.taskmanager.model.User;
 import com.helalferrari.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,12 @@ public class UserController {
     @PostMapping("/create")
     public User createUser(@RequestBody User user) {
         return userService.save(user);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody UserUpdateDto userUpdateDto) {
+        return userService.update(id, userUpdateDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

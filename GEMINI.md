@@ -3,32 +3,33 @@
 This document serves as a persistent knowledge base for the TaskManager Backend project, documenting the architectural decisions, entity structures, and API configurations.
 
 ## Architecture
-The project follows the **MVC (Model-View-Controller)** pattern using **Spring Boot 3.4.x** (configured for Java 25).
+The project follows the **MVC (Model-View-Controller)** pattern using **Spring Boot 3.4.x** (configured for Java 21).
 
 ### Tech Stack
 - **Framework:** Spring Boot (Web, Data JPA, Security)
 - **Database:** H2 (In-memory for development)
-- **Utilities:** Lombok, Jakarta Persistence (JPA)
+- **Utilities:** Lombok, Jakarta Persistence (JPA), JJWT (v0.12.6)
 
 ## Database Configuration (`application.properties`)
 - **URL:** `jdbc:h2:mem:taskdb`
 - **User/Password:** `sa` / (empty)
 - **H2 Console:** Enabled at `/h2-console`
-- **Hibernate DDL:** `update` (automatic table creation)
+- **Hibernate DDL:** `create-drop` (automatic table creation)
+- **Seed Scripts:** `user.sql` and `tasks.sql` are loaded on startup.
 
 ## Entities
 
 ### User (`com.helalferrari.taskmanager.model.User`)
 | Attribute | Type | Constraints |
 | :--- | :--- | :--- |
-| `id` | UUID | Primary Key (Auto-generated) |
+| `id` | UUID | Primary Key |
 | `email` | String | Unique, Not Null |
-| `password` | String | Not Null |
+| `password` | String | Not Null (BCrypt encoded) |
 
 ### Task (`com.helalferrari.taskmanager.model.Task`)
 | Attribute | Type | Constraints |
 | :--- | :--- | :--- |
-| `id` | UUID | Primary Key (Auto-generated) |
+| `id` | UUID | Primary Key |
 | `user` | User | Foreign Key (`user_id`), Not Null |
 | `title` | String | Not Null |
 | `completed` | boolean | Not Null |
@@ -38,17 +39,26 @@ The project follows the **MVC (Model-View-Controller)** pattern using **Spring B
 
 ## API Endpoints
 
-### Tasks
+### Authentication
+- `POST /api/auth/login`: Authenticates a user and returns a JWT token + user info.
+
+### Tasks (Protected by JWT)
 - `GET /api/tasks?userId={UUID}`: Lists all tasks for a specific user.
 
 ### Users
-- `POST /api/users`: Creates a new user.
-- `GET /api/users/{id}`: Retrieves user details by ID.
+- `POST /api/users/create`: Creates a new user (Public).
+- `GET /api/users/{id}`: Retrieves user details by ID (Protected).
+- `PUT /api/users/{id}`: Updates user email and/or password (Protected).
 
 ## Security
-- **CSRF:** Disabled for development.
-- **Access Control:** All `/api/**` and `/h2-console/**` endpoints are currently permitted for easier testing.
-- **X-Frame-Options:** Set to `SAMEORIGIN` to allow H2 Console usage.
+- **JWT Authentication:** Implemented via `JwtAuthenticationFilter`.
+- **Authorization Header:** Must be `Bearer <token>`.
+- **Token Expiration:** 24 hours.
+- **CSRF:** Disabled.
+- **CORS:** Currently not explicitly configured (Standard Spring defaults).
+- **Public Endpoints:** `/api/auth/**`, `/api/users/**`, `/h2-console/**`, `/swagger-ui/**`.
+- **Protected Endpoints:** `/api/tasks/**`.
 
-## Repository Custom Methods
-- `TaskRepository.findByUserId(UUID userId)`: Custom query to filter tasks by the associated user's ID.
+## Development Data (user.sql)
+- **User 1:** `user1@example.com` / `123`
+- **User 2:** `user2@example.com` / `123`
