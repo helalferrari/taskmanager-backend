@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/users/create").permitAll()
                 .requestMatchers("/api/users/**").authenticated()
-                .requestMatchers("/api/tasks/**").authenticated()
+                .requestMatchers("/api/tasks", "/api/tasks/**").authenticated()
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))

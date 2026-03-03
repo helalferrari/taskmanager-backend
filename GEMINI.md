@@ -44,6 +44,8 @@ The project follows the **MVC (Model-View-Controller)** pattern using **Spring B
 
 ### Tasks (Protected by JWT)
 - `GET /api/tasks?userId={UUID}`: Lists all tasks for a specific user.
+- `POST /api/tasks`: Creates a new task for a specific user.
+- `PUT /api/tasks/{id}`: Updates task title, completed status, or deleted status.
 
 ### Users
 - `POST /api/users/create`: Creates a new user (Public).
