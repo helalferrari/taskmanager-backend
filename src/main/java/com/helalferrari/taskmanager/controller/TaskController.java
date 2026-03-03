@@ -34,4 +34,18 @@ public class TaskController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PatchMapping("/{id}/complete")
+    public ResponseEntity<Task> completeTask(@PathVariable UUID id) {
+        return taskService.completeTask(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{id}/uncomplete")
+    public ResponseEntity<Task> uncompleteTask(@PathVariable UUID id) {
+        return taskService.uncompleteTask(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

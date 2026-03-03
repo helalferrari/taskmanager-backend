@@ -42,7 +42,7 @@ public class TaskService {
 
     public Optional<Task> update(UUID id, TaskUpdateDto dto) {
         return taskRepository.findById(id).map(task -> {
-            // Validação: Somente o dono da tarefa pode alterá-la
+            // Validação: Somente o dono da tarefa pode alterá-la via PUT (alteração completa)
             if (!task.getUser().getId().equals(dto.getUserId())) {
                 throw new RuntimeException("Você não tem permissão para alterar esta tarefa.");
             }
@@ -56,6 +56,20 @@ public class TaskService {
             if (dto.getDeleted() != null) {
                 task.setDeleted(dto.getDeleted());
             }
+            return taskRepository.save(task);
+        });
+    }
+
+    public Optional<Task> completeTask(UUID id) {
+        return taskRepository.findById(id).map(task -> {
+            task.setCompleted(true);
+            return taskRepository.save(task);
+        });
+    }
+
+    public Optional<Task> uncompleteTask(UUID id) {
+        return taskRepository.findById(id).map(task -> {
+            task.setCompleted(false);
             return taskRepository.save(task);
         });
     }
