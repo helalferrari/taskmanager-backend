@@ -26,6 +26,10 @@ public class TaskService {
         return taskRepository.findByUserId(userId);
     }
 
+    public List<Task> findAll() {
+        return taskRepository.findAll();
+    }
+
     public Task save(TaskCreateDto dto) {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));

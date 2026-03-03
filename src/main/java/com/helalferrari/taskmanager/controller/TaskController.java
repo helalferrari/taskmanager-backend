@@ -19,7 +19,12 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping
-    public List<Task> getTasksByUserId(@RequestParam UUID userId) {
+    public List<Task> getAllTasks() {
+        return taskService.findAll();
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Task> getTasksByUserId(@PathVariable UUID userId) {
         return taskService.findByUserId(userId);
     }
 
