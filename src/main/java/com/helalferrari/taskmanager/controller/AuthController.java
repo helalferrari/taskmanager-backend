@@ -5,6 +5,7 @@ import com.helalferrari.taskmanager.dto.LoginResponse;
 import com.helalferrari.taskmanager.model.User;
 import com.helalferrari.taskmanager.repository.UserRepository;
 import com.helalferrari.taskmanager.service.JwtService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class AuthController {
     private JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         System.out.println("Tentativa de login para: " + request.getEmail());
         return userRepository.findByEmail(request.getEmail())
                 .map(user -> {

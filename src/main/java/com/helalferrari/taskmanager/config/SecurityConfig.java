@@ -33,7 +33,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/users/create").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/users/register").permitAll()
                 .requestMatchers("/api/users/**").authenticated()
                 .requestMatchers("/api/tasks", "/api/tasks/**").authenticated()
                 .anyRequest().authenticated()

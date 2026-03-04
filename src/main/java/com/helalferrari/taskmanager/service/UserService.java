@@ -1,6 +1,7 @@
 package com.helalferrari.taskmanager.service;
 
 import com.helalferrari.taskmanager.dto.UserUpdateDto;
+import com.helalferrari.taskmanager.exception.EmailAlreadyExistsException;
 import com.helalferrari.taskmanager.model.User;
 import com.helalferrari.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,19 @@ public class UserService {
     }
 
     public User save(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("Este e-mail já está cadastrado.");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     public Optional<User> update(UUID id, UserUpdateDto dto) {
         return userRepository.findById(id).map(user -> {
-            if (dto.getEmail() != null) {
+            if (dto.getEmail() != null && !dto.getEmail().equals(user.getEmail())) {
+                if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+                    throw new EmailAlreadyExistsException("Este e-mail já está em uso por outro usuário.");
+                }
                 user.setEmail(dto.getEmail());
             }
             if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {

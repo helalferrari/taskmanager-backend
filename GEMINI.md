@@ -51,7 +51,7 @@ The project follows the **MVC (Model-View-Controller)** pattern using **Spring B
 - `PATCH /api/tasks/{id}/uncomplete`: Marks a task as uncompleted (Any authenticated user).
 
 ### Users
-- `POST /api/users/create`: Creates a new user (Public).
+- `POST /api/users/register`: Creates a new user (Public).
 - `GET /api/users/{id}`: Retrieves user details by ID (Protected).
 - `PUT /api/users/{id}`: Updates user email and/or password (Protected).
 
