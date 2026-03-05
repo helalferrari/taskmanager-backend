@@ -17,7 +17,7 @@ import java.util.function.Function;
 public class JwtService {
 
     // Em produção, essa chave deve vir de uma variável de ambiente e ser muito mais longa.
-    private static final String SECRET_KEY = "sua_chave_secreta_muito_longa_e_segura_para_o_projeto_taskmanager";
+    private static final String SECRET_KEY = "3b08e7a46924b1c20e987c209848f5e7186259f5186b51829e25187e1c251d8b2e1f25182e182e182e182e182e182e182e182e182e182e182e182e182e182e18";
     private static final long EXPIRATION_TIME = 86400000; // 24 horas em milisegundos
 
     public String generateToken(UUID userId, String email) {

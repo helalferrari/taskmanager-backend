@@ -12,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterResponse {
+    private String token;
     private String message;
     private UserDto user;
 

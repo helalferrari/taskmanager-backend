@@ -51,9 +51,12 @@ The project follows the **MVC (Model-View-Controller)** pattern using **Spring B
 - `PATCH /api/tasks/{id}/uncomplete`: Marks a task as uncompleted (Any authenticated user).
 
 ### Users
-- `POST /api/users/register`: Creates a new user (Public).
+- `POST /api/users/register`: Creates a new user and returns a JWT token for automatic login (Public).
 - `GET /api/users/{id}`: Retrieves user details by ID (Protected).
 - `PUT /api/users/{id}`: Updates user email and/or password (Protected).
+
+## Evolutions & Recent Changes
+- **Auto-login on Register (2026-03-04):** The registration API (`POST /api/users/register`) was updated to automatically log in the user upon successful creation by returning a JWT token in the response.
 
 ## Security
 - **JWT Authentication:** Implemented via `JwtAuthenticationFilter`.

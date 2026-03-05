@@ -19,6 +19,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private com.helalferrari.taskmanager.service.JwtService jwtService;
+
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable UUID id) {
         return userService.findById(id)
@@ -29,8 +32,11 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> createUser(@Valid @RequestBody User user) {
         User savedUser = userService.save(user);
+        String token = jwtService.generateToken(savedUser.getId(), savedUser.getEmail());
+        
         RegisterResponse response = RegisterResponse.builder()
                 .message("Usuário registrado com sucesso!")
+                .token(token)
                 .user(RegisterResponse.UserDto.builder()
                         .id(savedUser.getId())
                         .email(savedUser.getEmail())
